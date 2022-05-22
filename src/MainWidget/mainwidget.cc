@@ -2,6 +2,8 @@
 // Created by 10451 on 2022/5/12.
 //
 
+#include <iostream>
+#include <set>
 #include "mainwidget.h"
 MainWidget::MainWidget() : sql_(new M_Sql) {
   /*!
@@ -247,18 +249,27 @@ void MainWidget::FlushListWidget(int row) {
  * \brief 删除选中的学生，并且在数据库中删除
  */
 void MainWidget::DeleteStudent() {
-  QList<QTableWidgetItem *> items = table_widget_->selectedItems();
-  if (!items.empty()) {
-    QMessageBox::StandardButton result = QMessageBox::question(this, "Delete", "Do you want to delete  student of [" +
-        items.at(0)->text() + "] ?");
+  //获取选中的行号，从0开始
+  std::vector<int> rows;
+  auto range = table_widget_->selectedRanges();
+  for (const auto &item: range) {
+    for (int i = item.topRow(); i <= item.bottomRow(); ++i) {
+      rows.push_back(i);
+    }
+  }
+  if (!rows.empty()) {
+    QMessageBox::StandardButton
+        result = QMessageBox::question(this, "Delete", "Do you want to delete  student of choice?");
     if (result == QMessageBox::Yes) {
-      auto id = items.at(0)->text();
-      sql_->Delete(id);
+      for (auto &row: rows) {
+        auto id = table_widget_->item(row, 0)->text();
+        sql_->Delete(id);
+      }
       FlushTable();
       list_widget_->clear();
     }
   } else {
-    QMessageBox::warning(this, "Warning", "Please select a student!");
+    QMessageBox::warning(this, "Warning", "Please select student!");
   }
 }
 /**
