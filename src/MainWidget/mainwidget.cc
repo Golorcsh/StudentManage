@@ -33,15 +33,15 @@ MainWidget::~MainWidget() {
  * @return
  */
 QGroupBox *MainWidget::CreateStuMess() {
-  auto *box = new QGroupBox("Student Information");
-  table_widget_ = new QTableWidget;
+  auto box = new QGroupBox("Student Information");
+  table_widget_ = new QTableWidget(box);
   table_widget_->setSelectionBehavior(QAbstractItemView::SelectRows);
   table_widget_->setColumnCount(4);
   //设置不可编辑
   table_widget_->setEditTriggers(QAbstractItemView::NoEditTriggers);
   table_widget_->setHorizontalHeaderLabels(QStringList() << "ID" << "Name" << "Gender" << "Age");
   FlushTable();
-  auto *AutoHBoxLayout = new QHBoxLayout;
+  auto AutoHBoxLayout = new QHBoxLayout(box);
   AutoHBoxLayout->addWidget(table_widget_);
   box->setLayout(AutoHBoxLayout);
 
@@ -60,20 +60,22 @@ QGroupBox *MainWidget::CreateStuMess() {
  * @return
  */
 QGroupBox *MainWidget::CreateMenu() {
-  auto *box = new QGroupBox("Student Details");
+  auto box = new QGroupBox("Student Details");
   //功能面板
-  auto *VBoxLayout = new QVBoxLayout;
-  list_widget_ = new QListWidget;
+  auto VBoxLayout = new QVBoxLayout(box);
+  list_widget_ = new QListWidget(box);
   //按钮控件
-  auto *Buts = new QGridLayout;
-  add_stu_button_ = new QPushButton("Add");
-  del_stu_button_ = new QPushButton("Delete");
-  find_stu_edit_ = new QLineEdit;
+  auto Buts = new QGridLayout;
+  add_stu_button_ = new QPushButton("Add", box);
+  del_stu_button_ = new QPushButton("Delete", box);
+  export_button_ = new QPushButton("Export", box);
+  find_stu_edit_ = new QLineEdit(box);
   find_stu_edit_->setPlaceholderText("Please input student ID or Name");
   find_stu_edit_->setClearButtonEnabled(true);
   Buts->addWidget(add_stu_button_, 0, 0);
   Buts->addWidget(del_stu_button_, 0, 1);
   Buts->addWidget(find_stu_edit_, 1, 0, 1, 0);
+  Buts->addWidget(export_button_, 2, 0, 1, 0);
 
   VBoxLayout->addWidget(list_widget_, 2);
   VBoxLayout->addLayout(Buts, 3);
@@ -86,6 +88,8 @@ QGroupBox *MainWidget::CreateMenu() {
   connect(del_stu_button_, &QPushButton::clicked, this, &MainWidget::DeleteStudent);
   //当在查找框中输入学生姓名后，调用FindStuMess函数
   connect(find_stu_edit_, &QLineEdit::returnPressed, this, &MainWidget::FindStuMess);
+  //点击导出按钮时，执行ExportStuMess函数
+  connect(export_button_, &QPushButton::clicked, this, &MainWidget::Export);
   return box;
 }
 /**
@@ -234,4 +238,18 @@ void MainWidget::ChangeStuMessItem(QTableWidgetItem *item) {
     string_list << table_widget_->item(item->row(), i)->text();
   }
   ModifyStuBox(string_list);
+}
+/*!
+ * \brief 导出CSV文件
+ */
+void MainWidget::Export() {
+  //获得所有学生信息
+  auto Students = sql_->SelectAll();
+  std::ofstream outfile("student.csv", std::ios::out | std::ios::trunc);
+  outfile << "ID,Name,Gender,Age" << std::endl;
+  for (const auto &student: Students) {
+    outfile << student.GetInfo() << std::endl;
+  }
+  outfile.close();
+  QMessageBox::information(this, "Success", "CSV file has been export!");
 }

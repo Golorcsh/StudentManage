@@ -12,6 +12,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <fstream>
 #include "../EditStuMessBox/editstumessbox.h"
 #include "../Config/common.h"
 #include "../Sql/msql.h"
@@ -30,6 +31,7 @@ class MainWidget : public QWidget {
   void FindStuMess();
   void ChangeStuMessItem(QTableWidgetItem *item);
   void ChangeStuMess(int row);
+  void Export();
 
  private:
   QGroupBox *CreateStuMess();
@@ -40,14 +42,15 @@ class MainWidget : public QWidget {
   QTableWidget *table_widget_{};
   //主窗口功能面板
   QListWidget *list_widget_{};
-  //主窗口添加、删除、保存、修改学生按钮
+  //主窗口添加、删除,导出按钮
   QPushButton *add_stu_button_{};
   QPushButton *del_stu_button_{};
+  QPushButton *export_button_{};
   QLineEdit *find_stu_edit_{};
 
   EditStuMessBox *mess_box_{};
 
-  M_Sql *sql_;
+  M_Sql *sql_{};
 };
 
 #endif //STUDENTMANAGE_SRC_MAINWIDGET_H_
