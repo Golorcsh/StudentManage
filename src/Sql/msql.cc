@@ -157,3 +157,21 @@ std::vector<Student> M_Sql::SelectAll() {
   query_->clear();
   return students;
 }
+/*!
+ * \brief 查询学生数据数量
+ * @return
+ */
+int M_Sql::SelectCount() {
+  if (!db.open()) {
+    qDebug() << "open database failed";
+    return 0;
+  }
+  auto select_cmd = QString("SELECT count(*) FROM student");
+  query_->exec(select_cmd);
+  int count = 0;
+  while (query_->next()) {
+    count = query_->value(0).toInt();
+  }
+  query_->clear();
+  return count;
+}

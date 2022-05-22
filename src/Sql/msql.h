@@ -20,6 +20,7 @@ class M_Sql {
   bool Update(QStringList &list);
   Student Select(int id);
   std::vector<Student> SelectAll();
+  int SelectCount();
  private:
   void Init();
   QSqlDatabase db;
