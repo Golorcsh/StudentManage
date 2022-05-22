@@ -43,3 +43,9 @@ std::ostream &operator<<(std::ostream &os, const Student &student) {
   return os;
 }
 
+std::string Student::GetInfo() const {
+  std::string
+      str = id_.toStdString() + "," + name_.toStdString() + "," + gender_.toStdString() + "," + age_.toStdString();
+  return str;
+}
+

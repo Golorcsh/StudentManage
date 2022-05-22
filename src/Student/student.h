@@ -20,12 +20,14 @@ class Student {
   void SetGender(const QString &gender);
   [[nodiscard]] const QString &GetAge() const;
   void SetAge(const QString &age);
+  std::string GetInfo() const;
 
  private:
   QString id_;
   QString name_;
   QString gender_;
   QString age_;
+  std::string GetInfo();
 };
 
 #endif //STUDENTMANAGE_SRC_STUDENT_H_
