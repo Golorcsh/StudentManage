@@ -2,9 +2,11 @@
 // Created by 10451 on 2022/5/15.
 //
 
+#include <iostream>
 #include "msql.h"
 M_Sql::M_Sql() {
   Init();
+  total_num_ = SelectCount();
 }
 
 M_Sql::~M_Sql() {
@@ -22,8 +24,6 @@ void M_Sql::Init() {
   if (!file.exists()) {
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbname);
-    db.setUserName("root");
-    db.setPassword("123456");
     query_ = new QSqlQuery(db);
     if (!db.open()) {
       qDebug() << "open database failed";
@@ -45,8 +45,6 @@ void M_Sql::Init() {
         db = QSqlDatabase::addDatabase("QSQLITE");
       }
       db.setDatabaseName(dbname);
-      db.setUserName("root");
-      db.setPassword("123456");
       query_ = new QSqlQuery(db);
     }
   }
@@ -67,6 +65,7 @@ bool M_Sql::Insert(QStringList &list) {
   query_->exec("commit;");
   bool isSuccess = query_->isActive();
   query_->clear();
+  ++total_num_;
   return isSuccess;
 }
 /*!
@@ -88,6 +87,7 @@ bool M_Sql::Delete(QString &id) {
   query_->exec("commit;");
   bool isSuccess = query_->isActive();
   query_->clear();
+  --total_num_;
   return isSuccess;
 }
 /*!
@@ -174,4 +174,32 @@ int M_Sql::SelectCount() {
   }
   query_->clear();
   return count;
+}
+int M_Sql::GetTotalNum() const {
+  return total_num_;
+}
+/*!
+ * \brief 通过页码查询学生数据
+ * @param page
+ * @param page_size
+ * @return
+ */
+std::vector<Student> M_Sql::SelectPage(int page, int page_size) {
+  if (!db.open()) {
+    qDebug() << "open database failed";
+    return {};
+  }
+  auto select_cmd = QString("SELECT * FROM student LIMIT %1,%2").arg(page * page_size).arg(page_size);
+  query_->exec(select_cmd);
+  std::vector<Student> students;
+  while (query_->next()) {
+    Student student;
+    student.SetId(query_->value(0).toString());
+    student.SetName(query_->value(1).toString());
+    student.SetGender(query_->value(2).toString());
+    student.SetAge(query_->value(3).toString());
+    students.emplace_back(student);
+  }
+  query_->clear();
+  return students;
 }

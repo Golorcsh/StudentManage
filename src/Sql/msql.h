@@ -18,11 +18,14 @@ class M_Sql {
   bool Insert(QStringList &list);
   bool Delete(QString &id);
   bool Update(QStringList &list);
+  [[nodiscard]] int GetTotalNum() const;
   Student Select(int id);
   std::vector<Student> SelectAll();
   int SelectCount();
+  std::vector<Student> SelectPage(int page, int page_size);
  private:
   void Init();
+  int total_num_{};
   QSqlDatabase db;
   QSqlQuery *query_;
 };
