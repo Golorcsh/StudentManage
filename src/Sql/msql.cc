@@ -12,6 +12,7 @@ M_Sql::~M_Sql() {
     delete query_;
     query_ = nullptr;
   }
+  db.close();
 }
 /*!
  * \brief 初始化数据库
