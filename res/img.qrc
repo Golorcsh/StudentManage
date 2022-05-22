@@ -2,4 +2,10 @@
     <qresource prefix="img">
         <file>qt_logo.png</file>
     </qresource>
+    <qresource prefix="icon">
+        <file>first.png</file>
+        <file>prev.png</file>
+        <file>next.png</file>
+        <file>last.png</file>
+    </qresource>
 </RCC>
