@@ -7,29 +7,39 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QPushButton>
 #include <QLineEdit>
-#include "../Sql/msql.h"
+#include "./mylabel.h"
 
 class PagingWidget : public QWidget {
  Q_OBJECT
  public:
   explicit PagingWidget(QWidget *parent = nullptr);
+  void SetCurrentPage(int current_page);
+  void SetInfo(int nums, int total_page);
  private:
   void Init();
-
  signals:
-  void PageChange(int page);
+  void PageChanged(int page_num);
   void NextPage();
   void PrevPage();
   void FirstPage();
   void LastPage();
 
+ private slots:
+  void InputPage();
+  void ClickNext();
+  void ClickPrev();
+  void ClickFirst();
+  void ClickLast();
+
  private:
   //分页按钮
-  QLabel *first_{};
-  QLabel *prev_{};
-  QLabel *next_{};
-  QLabel *last_{};
+  MyLabel *first_{};
+  MyLabel *prev_{};
+  MyLabel *next_{};
+  MyLabel *last_{};
+  QLabel *info_{};
   QLineEdit *input_page_{};
 };
 
