@@ -38,7 +38,8 @@ std::ostream &operator<<(std::ostream &os, const Student &student) {
   os << "id_: " << student.id_.toStdString() << " name_: " << student.name_.toStdString() << " gender_: "
      << student.gender_.toStdString()
      << " age_: "
-     << student.age_.toStdString();
+     << student.age_.toStdString()
+     << std::endl;
   return os;
 }
 

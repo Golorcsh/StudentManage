@@ -10,10 +10,10 @@ class Student {
  public:
   Student() = default;
   Student(QString id, QString name, QString age, QString gender);
+  friend std::ostream &operator<<(std::ostream &os, const Student &student);
 
   [[nodiscard]] const QString &GetId() const;
   void SetId(const QString &id);
-  friend std::ostream &operator<<(std::ostream &os, const Student &student);
   [[nodiscard]] const QString &GetName() const;
   void SetName(const QString &name);
   [[nodiscard]] const QString &GetGender() const;
