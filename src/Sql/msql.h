@@ -16,6 +16,7 @@ class M_Sql {
   M_Sql();
   ~M_Sql();
   bool Insert(QStringList &list);
+  bool Insert(Student &stu);
   bool Delete(QString &id);
   bool Update(QStringList &list);
   [[nodiscard]] int GetTotalNum() const;

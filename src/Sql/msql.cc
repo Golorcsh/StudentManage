@@ -49,6 +49,11 @@ void M_Sql::Init() {
   }
   db.close();
 }
+/*!
+ * \brief 插入学生信息到数据库
+ * \param list 学生信息
+ * \return 是否插入成功
+ */
 bool M_Sql::Insert(QStringList &list) {
   if (list.size() != 3) {
     return false;
@@ -59,6 +64,28 @@ bool M_Sql::Insert(QStringList &list) {
   }
   auto insert_cmd =
       QString("INSERT INTO student(name,gender,age) VALUES('%1','%2','%3')").arg(list[0], list[1], list[2]);
+  query_->exec("begin;");
+  query_->exec(insert_cmd);
+  query_->exec("commit;");
+  bool isSuccess = query_->isActive();
+  query_->clear();
+  ++total_num_;
+  return isSuccess;
+}
+/*!
+ * \brief 插入学生信息到数据库
+ * \param stu 学生信息
+ * \return 是否插入成功
+ */
+bool M_Sql::Insert(Student &stu) {
+  if (!db.open()) {
+    qDebug() << "open database failed";
+    return false;
+  }
+  auto insert_cmd =
+      QString("INSERT INTO student(name,gender,age) VALUES('%1','%2','%3')").arg(stu.GetName(),
+                                                                                 stu.GetGender(),
+                                                                                 stu.GetAge());
   query_->exec("begin;");
   query_->exec(insert_cmd);
   query_->exec("commit;");
