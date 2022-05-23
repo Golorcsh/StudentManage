@@ -126,6 +126,8 @@ QGroupBox *MainWidget::CreateMenu() {
   connect(find_stu_edit_, &QLineEdit::returnPressed, this, &MainWidget::FindStuMess);
   //当用户击导出按钮时，执行ExportStuMess函数
   connect(export_button_, &QPushButton::clicked, this, &MainWidget::Export);
+  //当用户点击导入按钮时，触发Clicked型号，调用Import函数
+  connect(import_button_, &QPushButton::clicked, this, &MainWidget::Import);
   return box;
 }
 /**
@@ -341,7 +343,7 @@ void MainWidget::Export() {
   std::ofstream outfile("student.csv", std::ios::out | std::ios::trunc);
   outfile << "ID,Name,Gender,Age" << std::endl;
   for (auto &student: Students) {
-    outfile << student.GetInfo();
+    outfile << student.GetInfo() << std::endl;
   }
   outfile.close();
   QMessageBox::information(this, "Success", "CSV file has been export!");
@@ -368,5 +370,35 @@ void MainWidget::CalulateTotalPage() {
 void MainWidget::PageSizeChanged(int page_size) {
   page_size_ = page_size;
   current_page_ = 0;
+  FlushTable();
+}
+/*!
+ * @brief 导入CSV文件，并解析数据，将数据写入到数据库中
+ */
+void MainWidget::Import() {
+  QString filename = QFileDialog::getOpenFileName(this, "Open CSV File", "", "CSV Files (*.csv)");
+  if (filename.isEmpty()) {
+    return;
+  }
+  //读取文件
+  std::ifstream infile(filename.toStdString());
+  if (!infile) {
+    QMessageBox::warning(this, "Warning", "Open file failed!");
+    return;
+  }
+  //解析文件
+  std::string line;
+  //跳过第一行
+  std::getline(infile, line);
+  while (std::getline(infile, line)) {
+    std::stringstream ss(line);
+    std::string item;
+    std::getline(ss, item, ',');//过滤掉第一个ID
+    QStringList string_list;
+    while (std::getline(ss, item, ',')) {
+      string_list << QString::fromStdString(item);
+    }
+    sql_->Insert(string_list);
+  }
   FlushTable();
 }

@@ -12,6 +12,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFileDialog>
+#include <QString>
 #include <fstream>
 #include <set>
 #include "../EditStuMessBox/editstumessbox.h"
@@ -42,6 +44,7 @@ class MainWidget : public QWidget {
   void ChangeStuMessItem(QTableWidgetItem *item);
   void ChangeStuMess(int row);
   void Export();
+  void Import();
 
  private:
   QGroupBox *CreateStuMess(int page_size);
