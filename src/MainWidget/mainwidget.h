@@ -51,6 +51,7 @@ class MainWidget : public QWidget {
   int total_page_{};
   int current_page_{};
   int page_size_{};
+  int total_num_{};
   //主窗口学生面板
   QTableWidget *table_widget_{};
   PagingWidget *paging_widget_{};

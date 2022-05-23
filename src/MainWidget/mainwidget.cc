@@ -39,8 +39,9 @@ QGroupBox *MainWidget::CreateStuMess(int page_size) {
   //设置分页参数
   this->page_size_ = page_size;
   this->current_page_ = 0;
-  int total_page = sql_->GetTotalNum() / page_size_;
-  this->total_page_ = total_page + (sql_->GetTotalNum() % page_size_ == 0 ? 0 : 1);
+  this->total_num_ = sql_->GetTotalNum();
+  int total_page = total_num_ / page_size_;
+  this->total_page_ = total_page + (total_num_ % page_size_ == 0 ? 0 : 1);
 
   auto box = new QGroupBox("Student Information");
   table_widget_ = new QTableWidget(box);
@@ -202,7 +203,7 @@ void MainWidget::FlushTableFromPageNum(int current_page) {
  * @brief 跳转到下一页
  */
 void MainWidget::NextPage() {
-  if (current_page_ < total_page_) {
+  if (current_page_ < total_page_ - 1) {
     ++current_page_;
     paging_widget_->SetCurrentPage(current_page_);
     FlushTable();
@@ -272,6 +273,10 @@ void MainWidget::DeleteStudent() {
         auto id = table_widget_->item(row, 0)->text();
         sql_->Delete(id);
       }
+      //当为最后一页，且删除的数量是最后一页的数量时，需要更新页码
+      if (current_page_ == total_page_ - 1 && rows.size() == total_num_ % page_size_) {
+        --current_page_;
+      }
       FlushTable();
       list_widget_->clear();
     }
@@ -288,23 +293,21 @@ void MainWidget::FindStuMess() {
     QMessageBox::warning(this, "Warning", "Please input a student id or name!");
     return;
   }
-  qint32 count = table_widget_->rowCount();
-  bool findSuccess = false;
-  if (count > 0) {
-    for (qint32 i = 0; i < count; i++) {
-      auto id = table_widget_->item(i, 0)->text();
-      auto name = table_widget_->item(i, 1)->text();
-      if (id == input || name == input) {
-        findSuccess = true;
-        //设置选中表单，并且更新功能列表显示查询到的学生信息
-        table_widget_->selectRow(i);
-        FlushListWidget(i);
-      }
-    }
-    if (!findSuccess) {
-      QMessageBox::information(this, "Query Failure", "No student found!");
-    }
+  int position = sql_->SelectPosition(input.toInt());
+  if (position == -1) {
+    QMessageBox::information(this, "Query Failure", "No student found!");
   }
+  //切换到对应的页码
+  int page = position / page_size_;
+  if (page != current_page_) {
+    current_page_ = page;
+    paging_widget_->SetCurrentPage(current_page_);
+    FlushTable();
+  }
+  //设置选中行
+  table_widget_->selectRow(position % page_size_);
+  //更新功能列表
+  FlushListWidget(position % page_size_);
 }
 
 /*!
@@ -349,14 +352,16 @@ void MainWidget::Export() {
  * @brief 计算更新总页数
  */
 void MainWidget::CalulateTotalPage() {
-  int total_page = sql_->GetTotalNum() / page_size_ + (sql_->GetTotalNum() % page_size_ == 0 ? 0 : 1);
-  //如果总页数改变，则更新总页数，并且将当前页更新为最后一页
+  if (total_num_ != sql_->GetTotalNum()) {
+    total_num_ = sql_->GetTotalNum();
+  }
+  int total_page = total_num_ / page_size_ + (total_num_ % page_size_ == 0 ? 0 : 1);
+  //如果总页数改变，则更新总页数
   if (this->total_page_ != total_page) {
     this->total_page_ = total_page;
-    current_page_ = total_page_ - 1;
-    paging_widget_->SetCurrentPage(current_page_);
   }
-  paging_widget_->SetInfo(sql_->GetTotalNum(), total_page_);
+  paging_widget_->SetCurrentPage(current_page_);
+  paging_widget_->SetInfo(total_num_, total_page_);
 }
 /*!
  * @brief 更新表单显示数量
@@ -364,6 +369,6 @@ void MainWidget::CalulateTotalPage() {
  */
 void MainWidget::PageSizeChanged(int page_size) {
   page_size_ = page_size;
-  CalulateTotalPage();
+  current_page_ = 0;
   FlushTable();
 }
