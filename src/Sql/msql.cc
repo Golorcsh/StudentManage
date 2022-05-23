@@ -124,15 +124,17 @@ Student M_Sql::Select(int id) {
   auto select_cmd =
       QString("select * from student where id='%1'").arg(id);
   query_->exec(select_cmd);
-  Student student;
   while (query_->next()) {
+    Student student;
     student.SetId(query_->value(0).toString());
     student.SetName(query_->value(1).toString());
     student.SetGender(query_->value(2).toString());
     student.SetAge(query_->value(3).toString());
+    query_->clear();
+    return student;
   }
   query_->clear();
-  return student;
+  return {};
 }
 /*!
  * \brief 查询所有学生数据
@@ -202,4 +204,23 @@ std::vector<Student> M_Sql::SelectPage(int page, int page_size) {
   }
   query_->clear();
   return students;
+}
+/*!
+ * 查询当前id所在的位置
+ * @param id
+ * @return
+ */
+int M_Sql::SelectPosition(int id) {
+  if (!db.open()) {
+    qDebug() << "open database failed";
+    return 0;
+  }
+  auto select_cmd = QString("SELECT count(*) FROM student where id<'%1'").arg(id);
+  query_->exec(select_cmd);
+  int count = -1;
+  while (query_->next()) {
+    count = query_->value(0).toInt();
+  }
+  query_->clear();
+  return count;
 }

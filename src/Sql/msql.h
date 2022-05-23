@@ -23,6 +23,7 @@ class M_Sql {
   std::vector<Student> SelectAll();
   int SelectCount();
   std::vector<Student> SelectPage(int page, int page_size);
+  int SelectPosition(int id);
  private:
   void Init();
   int total_num_{};
