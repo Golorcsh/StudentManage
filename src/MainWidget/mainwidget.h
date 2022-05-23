@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <fstream>
+#include <set>
 #include "../EditStuMessBox/editstumessbox.h"
 #include "../PagingWidget/pagingwidget.h"
 #include "../Config/common.h"

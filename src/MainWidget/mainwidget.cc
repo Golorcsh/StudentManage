@@ -2,8 +2,6 @@
 // Created by 10451 on 2022/5/12.
 //
 
-#include <iostream>
-#include <set>
 #include "mainwidget.h"
 MainWidget::MainWidget() : sql_(new M_Sql) {
   /*!

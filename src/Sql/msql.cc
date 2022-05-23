@@ -2,7 +2,6 @@
 // Created by 10451 on 2022/5/15.
 //
 
-#include <iostream>
 #include "msql.h"
 M_Sql::M_Sql() {
   Init();
