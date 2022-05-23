@@ -52,17 +52,20 @@ QGroupBox *MainWidget::CreateStuMess(int page_size) {
   //分页控件
   paging_widget_ = new PagingWidget(box);
   paging_widget_->SetCurrentPage(current_page_);
+  paging_widget_->SetPageSize(page_size_);
 
+  //刷新表单
   FlushTable();
-  auto box_layout = new QVBoxLayout(box);
-  auto table_layout = new QHBoxLayout(box);
-  auto paging_layout = new QHBoxLayout(box);
+  //设置布局
+  auto main_layout = new QVBoxLayout();
+  auto table_layout = new QHBoxLayout();
+  auto paging_layout = new QHBoxLayout();
   table_layout->addWidget(table_widget_);
   paging_layout->addWidget(paging_widget_);
   paging_layout->setAlignment(Qt::AlignCenter);
-  box_layout->addLayout(table_layout);
-  box_layout->addLayout(paging_layout);
-  box->setLayout(box_layout);
+  main_layout->addLayout(table_layout, 20);
+  main_layout->addLayout(paging_layout, 1);
+  box->setLayout(main_layout);
 
   //信号槽连接
   //当用户点击表格中的某个单元格时，触发cellClicked信号，更新列表中学生信息
@@ -81,6 +84,8 @@ QGroupBox *MainWidget::CreateStuMess(int page_size) {
   connect(paging_widget_, &PagingWidget::PrevPage, this, &MainWidget::PrevPage);
   //当用户点击下一页是，触发NextPage信号，调用NextPage函数
   connect(paging_widget_, &PagingWidget::NextPage, this, &MainWidget::NextPage);
+  //当用户输入页码大小时，触发PageSizeChanged信号，调用PageSizeChanged函数
+  connect(paging_widget_, &PagingWidget::PageSizeChanged, this, &MainWidget::PageSizeChanged);
 
   return box;
 }
@@ -350,4 +355,13 @@ void MainWidget::CalulateTotalPage() {
     paging_widget_->SetCurrentPage(current_page_);
   }
   paging_widget_->SetInfo(sql_->GetTotalNum(), total_page_);
+}
+/*!
+ * @brief 更新表单显示数量
+ * @param page_size
+ */
+void MainWidget::PageSizeChanged(int page_size) {
+  page_size_ = page_size;
+  CalulateTotalPage();
+  FlushTable();
 }

@@ -34,6 +34,7 @@ class MainWidget : public QWidget {
   void PrevPage();
   void NextPage();
   void LastPage();
+  void PageSizeChanged(int page_size);
   void FlushListWidget(int row);
   void DeleteStudent();
   void FindStuMess();
