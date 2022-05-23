@@ -11,7 +11,6 @@ PagingWidget::PagingWidget(QWidget *parent) : QWidget(parent) {
  * @brief 初始化
  */
 void PagingWidget::Init() {
-  this->setFixedSize(300, 35);
   first_ = new MyLabel(this);
   last_ = new MyLabel(this);
   prev_ = new MyLabel(this);
@@ -41,22 +40,42 @@ void PagingWidget::Init() {
   next_->setPixmap(*next_img);
 
   input_page_ = new QLineEdit(this);
-  input_page_->setFixedWidth(30);
+  input_page_->setFixedSize(30, 20);
   input_page_->setAlignment(Qt::AlignCenter);
+
   info_ = new QLabel(this);
   info_->setFixedHeight(20);
+  info_->setFixedWidth(100);
+  info_->setAlignment(Qt::AlignCenter);
+  info_->adjustSize();
 
-  auto HBLayout = new QHBoxLayout(this);
-  HBLayout->setAlignment(Qt::AlignCenter);
-  HBLayout->addWidget(first_);
-  HBLayout->addWidget(prev_);
-  HBLayout->addWidget(input_page_);
-  HBLayout->addWidget(next_);
-  HBLayout->addWidget(last_);
-  HBLayout->addWidget(info_);
-  HBLayout->setContentsMargins(0, 0, 0, 0);
-  HBLayout->setSpacing(0);
-  this->setLayout(HBLayout);
+  page_size_label_ = new QLabel(this);
+  page_size_label_->setAlignment(Qt::AlignCenter);
+  page_size_label_->setFixedHeight(20);
+  page_size_label_->setText("PageSize:");
+
+  input_page_size_ = new QLineEdit(this);
+  input_page_size_->setFixedSize(30, 20);
+  input_page_size_->setAlignment(Qt::AlignCenter);
+
+  auto hb_layout1 = new QHBoxLayout();
+  hb_layout1->addWidget(first_);
+  hb_layout1->addWidget(prev_);
+  hb_layout1->addWidget(input_page_);
+  hb_layout1->addWidget(next_);
+  hb_layout1->addWidget(last_);
+  hb_layout1->setSpacing(0);
+  hb_layout1->setAlignment(Qt::AlignCenter);
+  auto hb_layout2 = new QHBoxLayout();
+  hb_layout2->addWidget(page_size_label_);
+  hb_layout2->addWidget(input_page_size_);
+  hb_layout2->addWidget(info_);
+  hb_layout2->setSpacing(0);
+  hb_layout2->setAlignment(Qt::AlignCenter);
+  auto main_layout = new QHBoxLayout();
+  main_layout->addLayout(hb_layout1, 10);
+  main_layout->addLayout(hb_layout2, 1);
+  this->setLayout(main_layout);
 
   //信号与槽
   connect(first_, &MyLabel::Clicked, this, &PagingWidget::ClickFirst);
@@ -64,6 +83,7 @@ void PagingWidget::Init() {
   connect(prev_, &MyLabel::Clicked, this, &PagingWidget::ClickPrev);
   connect(next_, &MyLabel::Clicked, this, &PagingWidget::ClickNext);
   connect(input_page_, &QLineEdit::returnPressed, this, &PagingWidget::InputPage);
+  connect(input_page_size_, &QLineEdit::returnPressed, this, &PagingWidget::InputPageSize);
 }
 /**
  * @brief 设置显示的页数
@@ -78,7 +98,7 @@ void PagingWidget::SetCurrentPage(int current_page) {
  * @param total_page
  */
 void PagingWidget::SetInfo(int nums, int total_page) {
-  info_->setText(QString("共%1条记录，共%2页").arg(nums).arg(total_page));
+  info_->setText(QString("%1P-%2S").arg(total_page).arg(nums));
 }
 /**
  * @brief 发出输入页码信号
@@ -110,4 +130,18 @@ void PagingWidget::ClickFirst() {
  */
 void PagingWidget::ClickLast() {
   emit LastPage();
+}
+/*!
+ * @brief 输入每页显示的记录数，发出信号
+ */
+void PagingWidget::InputPageSize() {
+  auto page_size = input_page_size_->text().toInt();
+  emit PageSizeChanged(page_size);
+}
+/*!
+ * @brief 设置每页显示的记录数
+ * @param page_size
+ */
+void PagingWidget::SetPageSize(int page_size) {
+  input_page_size_->setText(QString::number(page_size));
 }

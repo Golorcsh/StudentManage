@@ -16,6 +16,7 @@ class PagingWidget : public QWidget {
  public:
   explicit PagingWidget(QWidget *parent = nullptr);
   void SetCurrentPage(int current_page);
+  void SetPageSize(int page_size);
   void SetInfo(int nums, int total_page);
  private:
   void Init();
@@ -25,6 +26,7 @@ class PagingWidget : public QWidget {
   void PrevPage();
   void FirstPage();
   void LastPage();
+  void PageSizeChanged(int page_size);
 
  private slots:
   void InputPage();
@@ -32,6 +34,7 @@ class PagingWidget : public QWidget {
   void ClickPrev();
   void ClickFirst();
   void ClickLast();
+  void InputPageSize();
 
  private:
   //分页按钮
@@ -41,6 +44,8 @@ class PagingWidget : public QWidget {
   MyLabel *last_{};
   QLabel *info_{};
   QLineEdit *input_page_{};
+  QLabel *page_size_label_{};
+  QLineEdit *input_page_size_{};
 };
 
 #endif //STUDENTMANAGE_SRC_PAGINGWIDGET_PAGINGWIDGET_H_
