@@ -60,6 +60,7 @@ class MainWidget : public QWidget {
   QPushButton *add_stu_button_{};
   QPushButton *del_stu_button_{};
   QPushButton *export_button_{};
+  QPushButton *import_button_{};
   QLineEdit *find_stu_edit_{};
 
   EditStuMessBox *mess_box_{};

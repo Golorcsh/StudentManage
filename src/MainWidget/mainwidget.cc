@@ -104,13 +104,15 @@ QGroupBox *MainWidget::CreateMenu() {
   add_stu_button_ = new QPushButton("Add", box);
   del_stu_button_ = new QPushButton("Delete", box);
   export_button_ = new QPushButton("Export", box);
+  import_button_ = new QPushButton("Import", box);
   find_stu_edit_ = new QLineEdit(box);
   find_stu_edit_->setPlaceholderText("Please input student ID or Name");
   find_stu_edit_->setClearButtonEnabled(true);
   Buts->addWidget(add_stu_button_, 0, 0);
   Buts->addWidget(del_stu_button_, 0, 1);
   Buts->addWidget(find_stu_edit_, 1, 0, 1, 0);
-  Buts->addWidget(export_button_, 2, 0, 1, 0);
+  Buts->addWidget(import_button_, 2, 0);
+  Buts->addWidget(export_button_, 2, 1);
 
   box_layout->addWidget(list_widget_, 2);
   box_layout->addLayout(Buts, 3);
