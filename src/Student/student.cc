@@ -8,6 +8,40 @@ Student::Student(QString id, QString name, QString age, QString gender) :
     id_(std::move(id)), name_(std::move(name)), age_(std::move(age)), gender_(std::move(gender)) {
 
 }
+Student::Student(const Student &stu) {
+  this->age_ = stu.age_;
+  this->name_ = stu.name_;
+  this->gender_ = stu.gender_;
+  this->age_ = stu.age_;
+}
+Student &Student::operator=(const Student &stu) {
+  if (this == &stu) {//防止自己赋值自己
+    return *this;
+  }
+  this->age_ = stu.age_;
+  this->name_ = stu.name_;
+  this->gender_ = stu.gender_;
+  this->age_ = stu.age_;
+  return *this;
+}
+Student::Student(Student &&stu) {
+  this->age_ = stu.age_;
+  this->name_ = stu.name_;
+  this->gender_ = stu.gender_;
+  this->age_ = stu.age_;
+  //注意
+  //由于该函数没有指针参数，因此没有意义。复习
+  //如果有指针参数，则需要将当前类的指针指向，参数类的指针，然后将参数类的指针置空
+}
+Student &Student::operator=(Student &&stu) {
+  if (this == &stu) {//防止自己赋值自己
+    return *this;
+  }
+  this->age_ = stu.age_;
+  this->name_ = stu.name_;
+  this->gender_ = stu.gender_;
+  this->age_ = stu.age_;
+}
 
 const QString &Student::GetId() const {
   return id_;
@@ -48,4 +82,3 @@ std::string Student::GetInfo() {
       str = id_.toStdString() + "," + name_.toStdString() + "," + gender_.toStdString() + "," + age_.toStdString();
   return str;
 }
-
