@@ -16,9 +16,9 @@ class Student {
   //拷贝赋值
   Student &operator=(const Student &stu);
   //移动构造
-  Student(Student &&stu);
+  Student(Student &&stu) noexcept ;
   //移动赋值
-  Student &operator=(Student &&stu);
+  Student &operator=(Student &&stu) noexcept;
   //析构函数
   ~Student() = default;
 

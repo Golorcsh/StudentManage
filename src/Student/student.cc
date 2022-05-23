@@ -9,7 +9,7 @@ Student::Student(QString id, QString name, QString age, QString gender) :
 
 }
 Student::Student(const Student &stu) {
-  this->age_ = stu.age_;
+  this->id_ = stu.id_;
   this->name_ = stu.name_;
   this->gender_ = stu.gender_;
   this->age_ = stu.age_;
@@ -18,14 +18,14 @@ Student &Student::operator=(const Student &stu) {
   if (this == &stu) {//防止自己赋值自己
     return *this;
   }
-  this->age_ = stu.age_;
+  this->id_ = stu.id_;
   this->name_ = stu.name_;
   this->gender_ = stu.gender_;
   this->age_ = stu.age_;
   return *this;
 }
-Student::Student(Student &&stu) {
-  this->age_ = stu.age_;
+Student::Student(Student &&stu) noexcept {
+  this->id_ = stu.id_;
   this->name_ = stu.name_;
   this->gender_ = stu.gender_;
   this->age_ = stu.age_;
@@ -33,14 +33,15 @@ Student::Student(Student &&stu) {
   //由于该函数没有指针参数，因此没有意义。复习
   //如果有指针参数，则需要将当前类的指针指向，参数类的指针，然后将参数类的指针置空
 }
-Student &Student::operator=(Student &&stu) {
+Student &Student::operator=(Student &&stu) noexcept {
   if (this == &stu) {//防止自己赋值自己
     return *this;
   }
-  this->age_ = stu.age_;
+  this->id_ = stu.id_;
   this->name_ = stu.name_;
   this->gender_ = stu.gender_;
   this->age_ = stu.age_;
+  return *this;
 }
 
 const QString &Student::GetId() const {
