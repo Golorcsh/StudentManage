@@ -93,14 +93,23 @@ void EditStuMessBox::UpDateStuMessToDB() {
     emit CloseBox();
   }
 }
+
 /*!
- * 设置年龄
+ * @brief 设置姓名
+ * @param name
+ */
+void EditStuMessBox::SetStuName(const QString &name) {
+  stu_name_->setText(name);
+}
+
+/*!
+ * @brief 设置年龄
  * @param age
  */
 void EditStuMessBox::SetStuAge(const QString &age) { stu_age_->setText(age); }
 
 /*!
- * 设置性别
+ * @brief 设置性别
  * @param age
  */
 void EditStuMessBox::SetStuGender(const QString &gender) {
@@ -108,13 +117,13 @@ void EditStuMessBox::SetStuGender(const QString &gender) {
 }
 
 /*!
- * 设置id
+ * @brief 设置id
  * @param age
  */
 void EditStuMessBox::SetId(const QString &id) { id_ = id; }
 
 /*!
- * \brief 切换为编辑模式，提交按钮信号槽设置为更新
+ * @brief 切换为编辑模式，提交按钮信号槽设置为更新
  */
 void EditStuMessBox::SetModifyMode() {
   disconnect(submit_, &QPushButton::clicked, nullptr, nullptr);
