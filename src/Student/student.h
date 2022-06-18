@@ -7,19 +7,19 @@
 #include <QString>
 #include <ostream>
 class Student {
- public:
+public:
   Student() = default;
-  //带参构造函数
+  // 带参构造函数
   Student(QString id, QString name, QString age, QString gender);
-  //拷贝构造
+  // 拷贝构造
   Student(const Student &stu);
-  //拷贝赋值
+  // 拷贝赋值
   Student &operator=(const Student &stu);
-  //移动构造
-  Student(Student &&stu) noexcept ;
-  //移动赋值
+  // 移动构造
+  Student(Student &&stu) noexcept;
+  // 移动赋值
   Student &operator=(Student &&stu) noexcept;
-  //析构函数
+  // 析构函数
   ~Student() = default;
 
   friend std::ostream &operator<<(std::ostream &os, const Student &student);
@@ -33,11 +33,12 @@ class Student {
   [[nodiscard]] const QString &GetAge() const;
   void SetAge(const QString &age);
   std::string GetInfo();
- private:
+
+private:
   QString id_;
   QString name_;
   QString gender_;
   QString age_;
 };
 
-#endif //STUDENTMANAGE_SRC_STUDENT_H_
+#endif // STUDENTMANAGE_SRC_STUDENT_H_
