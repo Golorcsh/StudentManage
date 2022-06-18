@@ -23,11 +23,8 @@ public:
   explicit EditStuMessBox(QWidget *parent, M_Sql *sql);
   ~EditStuMessBox() override;
 
-  [[nodiscard]] QString GetStuName() const;
   void SetStuName(const QString &name);
-  [[nodiscard]] QString GetStuAge() const;
   void SetStuAge(const QString &age);
-  [[nodiscard]] QString GetStuGender() const;
   void SetStuGender(const QString &gender);
   void SetId(const QString &id);
   void SetModifyMode();

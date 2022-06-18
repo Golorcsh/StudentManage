@@ -76,7 +76,9 @@ void EditStuMessBox::SaveStuMessToDB() {
     emit CloseBox();
   }
 }
-
+/*!
+ * \brief 更新学生信息到数据库中
+ */
 void EditStuMessBox::UpDateStuMessToDB() {
   if (stu_name_->text().isEmpty() || stu_age_->text().isEmpty() ||
       stu_gender_->text().isEmpty()) {
@@ -91,20 +93,28 @@ void EditStuMessBox::UpDateStuMessToDB() {
     emit CloseBox();
   }
 }
-
-QString EditStuMessBox::GetStuName() const { return stu_name_->text(); }
-void EditStuMessBox::SetStuName(const QString &name) {
-  stu_name_->setText(name);
-}
-QString EditStuMessBox::GetStuAge() const { return stu_age_->text(); }
+/*!
+ * 设置年龄
+ * @param age
+ */
 void EditStuMessBox::SetStuAge(const QString &age) { stu_age_->setText(age); }
-QString EditStuMessBox::GetStuGender() const { return stu_gender_->text(); }
+
+/*!
+ * 设置性别
+ * @param age
+ */
 void EditStuMessBox::SetStuGender(const QString &gender) {
   stu_gender_->setText(gender);
 }
-void EditStuMessBox::SetId(const QString &id) { id_ = id; }
+
 /*!
- * 切换为编辑模式，提交按钮信号槽设置为更新
+ * 设置id
+ * @param age
+ */
+void EditStuMessBox::SetId(const QString &id) { id_ = id; }
+
+/*!
+ * \brief 切换为编辑模式，提交按钮信号槽设置为更新
  */
 void EditStuMessBox::SetModifyMode() {
   disconnect(submit_, &QPushButton::clicked, nullptr, nullptr);
