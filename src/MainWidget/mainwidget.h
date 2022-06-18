@@ -5,32 +5,33 @@
 #ifndef STUDENTMANAGE_SRC_MAINWIDGET_H_
 #define STUDENTMANAGE_SRC_MAINWIDGET_H_
 
-#include <QWidget>
-#include <QGroupBox>
-#include <QTableWidget>
-#include <QListWidget>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QFileDialog>
-#include <QString>
-#include <fstream>
-#include <set>
+#include "../Config/common.h"
 #include "../EditStuMessBox/editstumessbox.h"
 #include "../PagingWidget/pagingwidget.h"
-#include "../Config/common.h"
 #include "../Sql/msql.h"
+#include <QFileDialog>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QListWidget>
+#include <QPushButton>
+#include <QString>
+#include <QTableWidget>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <fstream>
+#include <set>
 
 class MainWidget : public QWidget {
- Q_OBJECT
- public:
+  Q_OBJECT
+public:
   MainWidget();
   ~MainWidget() override;
- private:
+
+private:
   void CalulateTotalPage();
   void AddStuBox();
   void ModifyStuBox(QStringList &list);
- public slots:
+public slots:
   void FlushTable();
   void FlushTableFromPageNum(int current_page);
   void FirstPage();
@@ -42,26 +43,25 @@ class MainWidget : public QWidget {
   void DeleteStudent();
   void FindStuMess();
   void ChangeStuMessItem(QTableWidgetItem *item);
-  void ChangeStuMess(int row);
   void Export();
   void Import();
 
- private:
+private:
   QGroupBox *CreateStuMess(int page_size);
   QGroupBox *CreateMenu();
 
- private:
-  //分页参数
+private:
+  // 分页参数
   int total_page_{};
   int current_page_{};
   int page_size_{};
   int total_num_{};
-  //主窗口学生面板
+  // 主窗口学生面板
   QTableWidget *table_widget_{};
   PagingWidget *paging_widget_{};
-  //主窗口功能面板
+  // 主窗口功能面板
   QListWidget *list_widget_{};
-  //主窗口添加、删除,导出按钮
+  // 主窗口添加、删除,导出按钮
   QPushButton *add_stu_button_{};
   QPushButton *del_stu_button_{};
   QPushButton *export_button_{};
@@ -73,4 +73,4 @@ class MainWidget : public QWidget {
   M_Sql *sql_{};
 };
 
-#endif //STUDENTMANAGE_SRC_MAINWIDGET_H_
+#endif // STUDENTMANAGE_SRC_MAINWIDGET_H_
