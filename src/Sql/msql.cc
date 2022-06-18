@@ -16,7 +16,7 @@ M_Sql::~M_Sql() {
   db.close();
 }
 /*!
- * \brief 初始化数据库
+ * @brief 初始化数据库
  */
 void M_Sql::Init() {
   QFileInfo file(dbname);
@@ -50,9 +50,9 @@ void M_Sql::Init() {
   db.close();
 }
 /*!
- * \brief 插入学生信息到数据库
- * \param list 学生信息
- * \return 是否插入成功
+ * @brief 插入学生信息到数据库
+ * @param list
+ * @return
  */
 bool M_Sql::Insert(QStringList &list) {
   if (list.size() != 3) {
@@ -63,7 +63,8 @@ bool M_Sql::Insert(QStringList &list) {
     return false;
   }
   auto insert_cmd =
-      QString("INSERT INTO student(name,gender,age) VALUES('%1','%2','%3')").arg(list[0], list[1], list[2]);
+      QString("INSERT INTO student(name,gender,age) VALUES('%1','%2','%3')")
+          .arg(list[0], list[1], list[2]);
   query_->exec("begin;");
   query_->exec(insert_cmd);
   query_->exec("commit;");
@@ -73,9 +74,9 @@ bool M_Sql::Insert(QStringList &list) {
   return isSuccess;
 }
 /*!
- * \brief 插入学生信息到数据库
- * \param stu 学生信息
- * \return 是否插入成功
+ * @brief 插入学生信息到数据库
+ * @param stu 学生信息
+ * @return 是否插入成功
  */
 bool M_Sql::Insert(Student &stu) {
   if (!db.open()) {
@@ -83,9 +84,8 @@ bool M_Sql::Insert(Student &stu) {
     return false;
   }
   auto insert_cmd =
-      QString("INSERT INTO student(name,gender,age) VALUES('%1','%2','%3')").arg(stu.GetName(),
-                                                                                 stu.GetGender(),
-                                                                                 stu.GetAge());
+      QString("INSERT INTO student(name,gender,age) VALUES('%1','%2','%3')")
+          .arg(stu.GetName(), stu.GetGender(), stu.GetAge());
   query_->exec("begin;");
   query_->exec(insert_cmd);
   query_->exec("commit;");
@@ -95,7 +95,7 @@ bool M_Sql::Insert(Student &stu) {
   return isSuccess;
 }
 /*!
- * \brief 通id删除学生数据
+ * @brief 通id删除学生数据
  * @param id
  * @return
  */
@@ -117,7 +117,7 @@ bool M_Sql::Delete(QString &id) {
   return isSuccess;
 }
 /*!
- * \brief 更新学生数据
+ * @brief 更新学生数据
  * @param id
  * @param list
  * @return
@@ -131,10 +131,8 @@ bool M_Sql::Update(QStringList &list) {
     return false;
   }
   auto update_cmd =
-      QString("UPDATE student SET name='%2',gender='%3',age='%4' where id='%1'").arg(list[0],
-                                                                                     list[1],
-                                                                                     list[2],
-                                                                                     list[3]);
+      QString("UPDATE student SET name='%2',gender='%3',age='%4' where id='%1'")
+          .arg(list[0], list[1], list[2], list[3]);
   query_->exec("begin;");
   query_->exec(update_cmd);
   query_->exec("commit;");
@@ -147,8 +145,7 @@ Student M_Sql::Select(int id) {
     qDebug() << "open database failed";
     return {};
   }
-  auto select_cmd =
-      QString("select * from student where id='%1'").arg(id);
+  auto select_cmd = QString("select * from student where id='%1'").arg(id);
   query_->exec(select_cmd);
   while (query_->next()) {
     Student student;
@@ -163,7 +160,7 @@ Student M_Sql::Select(int id) {
   return {};
 }
 /*!
- * \brief 查询所有学生数据
+ * @brief 查询所有学生数据
  * @return
  */
 std::vector<Student> M_Sql::SelectAll() {
@@ -186,7 +183,7 @@ std::vector<Student> M_Sql::SelectAll() {
   return students;
 }
 /*!
- * \brief 查询学生数据数量
+ * @brief 查询学生数据数量
  * @return
  */
 int M_Sql::SelectCount() {
@@ -203,11 +200,14 @@ int M_Sql::SelectCount() {
   query_->clear();
   return count;
 }
-int M_Sql::GetTotalNum() const {
-  return total_num_;
-}
 /*!
- * \brief 通过页码查询学生数据
+ * @brief 获得查询的记录条数
+ * @return
+ */
+int M_Sql::GetTotalNum() const { return total_num_; }
+
+/*!
+ * @brief 通过页码查询学生数据
  * @param page
  * @param page_size
  * @return
@@ -217,7 +217,9 @@ std::vector<Student> M_Sql::SelectPage(int page, int page_size) {
     qDebug() << "open database failed";
     return {};
   }
-  auto select_cmd = QString("SELECT * FROM student LIMIT %1,%2").arg(page * page_size).arg(page_size);
+  auto select_cmd = QString("SELECT * FROM student LIMIT %1,%2")
+                        .arg(page * page_size)
+                        .arg(page_size);
   query_->exec(select_cmd);
   std::vector<Student> students;
   while (query_->next()) {
@@ -241,7 +243,8 @@ int M_Sql::SelectPosition(int id) {
     qDebug() << "open database failed";
     return 0;
   }
-  auto select_cmd = QString("SELECT count(*) FROM student where id<'%1'").arg(id);
+  auto select_cmd =
+      QString("SELECT count(*) FROM student where id<'%1'").arg(id);
   query_->exec(select_cmd);
   int count = -1;
   while (query_->next()) {
