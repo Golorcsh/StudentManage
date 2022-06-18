@@ -52,6 +52,12 @@ void Student::SetGender(const QString &gender) { gender_ = gender; }
 const QString &Student::GetAge() const { return age_; }
 void Student::SetAge(const QString &age) { age_ = age; }
 
+/*!
+ * @brief 友元函数重载<<符号，以便直接输出该类的参数
+ * @param os
+ * @param student
+ * @return
+ */
 std::ostream &operator<<(std::ostream &os, const Student &student) {
   os << "id_: " << student.id_.toStdString()
      << " name_: " << student.name_.toStdString()
@@ -60,6 +66,10 @@ std::ostream &operator<<(std::ostream &os, const Student &student) {
   return os;
 }
 
+/*!
+ * @brief 输出该来的参数，用于导出学生信息
+ * @return
+ */
 std::string Student::GetInfo() {
   std::string str = id_.toStdString() + "," + name_.toStdString() + "," +
                     gender_.toStdString() + "," + age_.toStdString();
