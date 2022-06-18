@@ -61,7 +61,7 @@ EditStuMessBox::~EditStuMessBox() {
 }
 
 /*!
- * \brief 将学生信息提交到数据库中
+ * @brief 将学生信息提交到数据库中
  */
 void EditStuMessBox::SaveStuMessToDB() {
   if (stu_name_->text().isEmpty() || stu_age_->text().isEmpty() ||
@@ -77,7 +77,7 @@ void EditStuMessBox::SaveStuMessToDB() {
   }
 }
 /*!
- * \brief 更新学生信息到数据库中
+ * @brief 更新学生信息到数据库中
  */
 void EditStuMessBox::UpDateStuMessToDB() {
   if (stu_name_->text().isEmpty() || stu_age_->text().isEmpty() ||

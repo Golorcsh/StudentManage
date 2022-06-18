@@ -141,7 +141,7 @@ QGroupBox *MainWidget::CreateMenu() {
   return box;
 }
 /**
- * \brief 点击add按钮后，创建添加学生信息子窗口
+ * @brief 点击add按钮后，创建添加学生信息子窗口
  */
 void MainWidget::AddStuBox() {
   /*!
@@ -251,7 +251,7 @@ void MainWidget::FlushListWidget(int row) {
 }
 
 /*!
- * \brief 删除选中的学生，并且在数据库中删除
+ * @brief 删除选中的学生，并且在数据库中删除
  */
 void MainWidget::DeleteStudent() {
   // 获取选中的行号，从0开始
@@ -309,7 +309,7 @@ void MainWidget::FindStuMess() {
 }
 
 /*!
- * \brief 编辑学生信息界面
+ * @brief 编辑学生信息界面
  */
 void MainWidget::ModifyStuBox(QStringList &list) {
   mess_box_ = new EditStuMessBox(this, sql_);
@@ -327,7 +327,7 @@ void MainWidget::ModifyStuBox(QStringList &list) {
 }
 
 /*!
- * \brief 双击表格中学生信息，进入修改界面
+ * @brief 双击表格中学生信息，进入修改界面
  */
 void MainWidget::ChangeStuMessItem(QTableWidgetItem *item) {
   // 获得表格中选中学生信息
@@ -339,7 +339,7 @@ void MainWidget::ChangeStuMessItem(QTableWidgetItem *item) {
   ModifyStuBox(string_list);
 }
 /*!
- * \brief 导出CSV文件
+ * @brief 导出CSV文件
  */
 void MainWidget::Export() {
   // 获得所有学生信息
