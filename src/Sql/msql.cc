@@ -145,7 +145,8 @@ Student M_Sql::Select(int id) {
     qDebug() << "open database failed";
     return {};
   }
-  auto select_cmd = QString("select * from student where id='%1'").arg(id);
+  auto select_cmd =
+      QString("select id,name,gender,age from student where id='%1'").arg(id);
   query_->exec(select_cmd);
   while (query_->next()) {
     Student student;
@@ -168,7 +169,7 @@ std::vector<Student> M_Sql::SelectAll() {
     qDebug() << "open database failed";
     return {};
   }
-  auto select_cmd = QString("SELECT * FROM student");
+  auto select_cmd = QString("SELECT id,name,gender,age FROM student");
   query_->exec(select_cmd);
   std::vector<Student> students;
   while (query_->next()) {
@@ -191,11 +192,11 @@ int M_Sql::SelectCount() {
     qDebug() << "open database failed";
     return 0;
   }
-  auto select_cmd = QString("SELECT count(*) FROM student");
+  auto select_cmd = QString("SELECT id FROM student");
   query_->exec(select_cmd);
   int count = 0;
   while (query_->next()) {
-    count = query_->value(0).toInt();
+    ++count;
   }
   query_->clear();
   return count;
@@ -217,9 +218,10 @@ std::vector<Student> M_Sql::SelectPage(int page, int page_size) {
     qDebug() << "open database failed";
     return {};
   }
-  auto select_cmd = QString("SELECT * FROM student LIMIT %1,%2")
-                        .arg(page * page_size)
-                        .arg(page_size);
+  auto select_cmd =
+      QString("SELECT id,name,gender,age FROM student LIMIT %1,%2")
+          .arg(page * page_size)
+          .arg(page_size);
   query_->exec(select_cmd);
   std::vector<Student> students;
   while (query_->next()) {
@@ -243,13 +245,12 @@ int M_Sql::SelectPosition(int id) {
     qDebug() << "open database failed";
     return 0;
   }
-  auto select_cmd =
-      QString("SELECT count(*) FROM student where id<'%1'").arg(id);
+  auto select_cmd = QString("SELECT id FROM student where id<'%1'").arg(id);
   query_->exec(select_cmd);
   int count = -1;
   while (query_->next()) {
-    count = query_->value(0).toInt();
+    ++count;
   }
   query_->clear();
-  return count;
+  return count + 1;
 }
