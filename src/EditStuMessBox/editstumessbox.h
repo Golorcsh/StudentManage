@@ -4,23 +4,22 @@
 
 #ifndef STUDENTMANAGE_SRC_EDITSTUMESSBOX_H_
 #define STUDENTMANAGE_SRC_EDITSTUMESSBOX_H_
-#include <QWidget>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QMessageBox>
-#include <QFormLayout>
-#include <QFile>
-#include <QDataStream>
-#include <QWidget>
-#include "../Student/student.h"
 #include "../Config/common.h"
 #include "../Sql//msql.h"
+#include "../Student/student.h"
+#include <QDataStream>
+#include <QFile>
+#include <QFormLayout>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QWidget>
 
 class EditStuMessBox : public QDialog {
- Q_OBJECT
- public:
+  Q_OBJECT
+public:
   explicit EditStuMessBox(QWidget *parent, M_Sql *sql);
   ~EditStuMessBox() override;
 
@@ -33,30 +32,27 @@ class EditStuMessBox : public QDialog {
   void SetId(const QString &id);
   void SetModifyMode();
 
- signals:
-  //自定义信号,添加学生信息后，发送信号，更新主界面的表格
+signals:
+  // 自定义信号,添加学生信息后，发送信号，更新主界面的表格
   void CloseBox();
 
- public slots:
-  //自定义槽
-  //将新学生的信息写入到数据库中
+public slots:
+  // 自定义槽
+  // 将新学生的信息写入到数据库中
   void SaveStuMessToDB();
-  //更新学生信息
+  // 更新学生信息
   void UpDateStuMessToDB();
 
- public:
-  //发出信号
-  void emitCloseBox();
-
- private:
+private:
   QLineEdit *stu_name_;
   QLineEdit *stu_age_;
   QLineEdit *stu_gender_;
   QPushButton *submit_;
- private:
+
+private:
   QPushButton *cancel_;
   M_Sql *sql_;
   QString id_;
   bool isAdd_;
 };
-#endif //STUDENTMANAGE_SRC_EDITSTUMESSBOX_H_
+#endif // STUDENTMANAGE_SRC_EDITSTUMESSBOX_H_
