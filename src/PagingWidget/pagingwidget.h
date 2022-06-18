@@ -4,23 +4,24 @@
 
 #ifndef STUDENTMANAGE_SRC_PAGINGWIDGET_PAGINGWIDGET_H_
 #define STUDENTMANAGE_SRC_PAGINGWIDGET_PAGINGWIDGET_H_
-#include <QWidget>
+#include "./mylabel.h"
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QPushButton>
 #include <QLineEdit>
-#include "./mylabel.h"
+#include <QPushButton>
+#include <QWidget>
 
 class PagingWidget : public QWidget {
- Q_OBJECT
- public:
+  Q_OBJECT
+public:
   explicit PagingWidget(QWidget *parent = nullptr);
   void SetCurrentPage(int current_page);
   void SetPageSize(int page_size);
   void SetInfo(int nums, int total_page);
- private:
+
+private:
   void Init();
- signals:
+signals:
   void PageChanged(int page_num);
   void NextPage();
   void PrevPage();
@@ -28,7 +29,7 @@ class PagingWidget : public QWidget {
   void LastPage();
   void PageSizeChanged(int page_size);
 
- private slots:
+private slots:
   void InputPage();
   void ClickNext();
   void ClickPrev();
@@ -36,8 +37,8 @@ class PagingWidget : public QWidget {
   void ClickLast();
   void InputPageSize();
 
- private:
-  //分页按钮
+private:
+  // 分页按钮
   MyLabel *first_{};
   MyLabel *prev_{};
   MyLabel *next_{};
@@ -48,4 +49,4 @@ class PagingWidget : public QWidget {
   QLineEdit *input_page_size_{};
 };
 
-#endif //STUDENTMANAGE_SRC_PAGINGWIDGET_PAGINGWIDGET_H_
+#endif // STUDENTMANAGE_SRC_PAGINGWIDGET_PAGINGWIDGET_H_

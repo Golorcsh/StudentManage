@@ -4,9 +4,7 @@
 
 #include "pagingwidget.h"
 
-PagingWidget::PagingWidget(QWidget *parent) : QWidget(parent) {
-  Init();
-}
+PagingWidget::PagingWidget(QWidget *parent) : QWidget(parent) { Init(); }
 /*!
  * @brief 初始化
  */
@@ -77,13 +75,15 @@ void PagingWidget::Init() {
   main_layout->addLayout(hb_layout2, 1);
   this->setLayout(main_layout);
 
-  //信号与槽
+  // 信号与槽
   connect(first_, &MyLabel::Clicked, this, &PagingWidget::ClickFirst);
   connect(last_, &MyLabel::Clicked, this, &PagingWidget::ClickLast);
   connect(prev_, &MyLabel::Clicked, this, &PagingWidget::ClickPrev);
   connect(next_, &MyLabel::Clicked, this, &PagingWidget::ClickNext);
-  connect(input_page_, &QLineEdit::returnPressed, this, &PagingWidget::InputPage);
-  connect(input_page_size_, &QLineEdit::returnPressed, this, &PagingWidget::InputPageSize);
+  connect(input_page_, &QLineEdit::returnPressed, this,
+          &PagingWidget::InputPage);
+  connect(input_page_size_, &QLineEdit::returnPressed, this,
+          &PagingWidget::InputPageSize);
 }
 /**
  * @brief 设置显示的页数
@@ -110,27 +110,19 @@ void PagingWidget::InputPage() {
 /**
  * @brief 发出下一页信号
  */
-void PagingWidget::ClickNext() {
-  emit NextPage();
-}
+void PagingWidget::ClickNext() { emit NextPage(); }
 /**
  * @brief 发出上一页信号
  */
-void PagingWidget::ClickPrev() {
-  emit PrevPage();
-}
+void PagingWidget::ClickPrev() { emit PrevPage(); }
 /**
  * @brief 发出第一页信号
  */
-void PagingWidget::ClickFirst() {
-  emit FirstPage();
-}
+void PagingWidget::ClickFirst() { emit FirstPage(); }
 /**
  * @brief 发出最后一页信号
  */
-void PagingWidget::ClickLast() {
-  emit LastPage();
-}
+void PagingWidget::ClickLast() { emit LastPage(); }
 /*!
  * @brief 输入每页显示的记录数，发出信号
  */
